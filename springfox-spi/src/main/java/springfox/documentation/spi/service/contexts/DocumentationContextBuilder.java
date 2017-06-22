@@ -66,7 +66,7 @@ public class DocumentationContextBuilder {
   private final Set<String> produces = newHashSet();
   private final Set<String> consumes = newHashSet();
   private final Set<ResolvedType> additionalModels = newHashSet();
-  private final Set<Tag> tags = newTreeSet(Tags.tagNameComparator());
+  private final Set<Tag> tags = newTreeSet(Tags.tagOrderComparator());
   private List<VendorExtension> vendorExtensions = new ArrayList<VendorExtension>();
 
   private TypeResolver typeResolver;
@@ -116,7 +116,7 @@ public class DocumentationContextBuilder {
     this.responseMessageOverrides.putAll(additionalResponseMessages);
     return this;
   }
-  
+
   public DocumentationContextBuilder additionalOperationParameters(List<Parameter> globalRequestParameters) {
     this.globalOperationParameters.addAll(nullToEmptyList(globalRequestParameters));
     return this;

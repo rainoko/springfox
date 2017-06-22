@@ -5,6 +5,7 @@ import com.google.common.collect.LinkedListMultimap
 import spock.lang.Specification
 
 import static springfox.documentation.service.Tags.emptyTags
+import static springfox.documentation.service.Tags.tagOrderComparator
 import static springfox.documentation.service.Tags.toTags
 
 class TagsSpec extends Specification {
@@ -27,6 +28,19 @@ class TagsSpec extends Specification {
       def tags = ["", null, "test"]
     expect:
       FluentIterable.from(tags).filter(emptyTags()).size() == 1
+  }
+
+  def "Comparator uses tag order" (Tag tag1, Tag tag2, expected) {
+    expect:
+    assert tagOrderComparator().compare(tag1, tag2) == expected
+    where:
+    tag1                | tag2                | expected
+    new Tag("B", "", 1) | new Tag("A", "", 2) | -1
+    new Tag("B", "", 1) | new Tag("A", "", 1) | 1
+    new Tag("A", "", 1) | new Tag("A", "", 1) | 0
+    new Tag("A", "") | new Tag("A", "") | 0
+    new Tag("A", "") | new Tag("B", "") | -1
+    new Tag("B", "") | new Tag("A", "") | 1
   }
 
 }

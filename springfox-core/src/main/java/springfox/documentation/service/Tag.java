@@ -19,6 +19,7 @@
 
 package springfox.documentation.service;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 import static com.google.common.base.Preconditions.*;
@@ -27,10 +28,16 @@ import static com.google.common.base.Strings.*;
 public class Tag {
   private final String name;
   private final String description;
+  private final int order;
 
-  public Tag(String name, String description) {
+  public Tag(String name, String description, int order) {
     this.name = checkNotNull(emptyToNull(name));
     this.description = description;
+    this.order = order;
+  }
+
+  public Tag(String name, String description) {
+    this(name, description, Integer.MAX_VALUE);
   }
 
   public String getName() {
@@ -39,6 +46,10 @@ public class Tag {
 
   public String getDescription() {
     return description;
+  }
+
+  public int getOrder() {
+    return order;
   }
 
   @Override
@@ -57,5 +68,14 @@ public class Tag {
   @Override
   public int hashCode() {
     return Objects.hashCode(name, description);
+  }
+
+  @Override
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+      .add("name", name)
+      .add("description", description)
+      .add("order", order)
+      .toString();
   }
 }
